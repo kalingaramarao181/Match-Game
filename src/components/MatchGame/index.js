@@ -11,8 +11,16 @@ class MatchGame extends Component {
     thumbnailList: [],
     activeTabId: 'FRUIT',
     score: 0,
-    index: 0,
+    timer: 60,
     checkImage: '',
+  }
+
+  componentDidMount() {
+    const timerId = setInterval(this.runningTime, 1000)
+  }
+
+  runningTime = () => {
+    this.setState(prevState => ({timer: prevState.timer - 1}))
   }
 
   getRandomImageDetails = () => {
@@ -62,7 +70,38 @@ class MatchGame extends Component {
     )
   }
 
-  renderResultPage = () => <div>Result</div>
+  palyAgain = () => {
+    this.setState({isTimeCompleted: true})
+  }
+
+  renderResultPage = () => {
+    const {score} = this.state
+    return (
+      <div className="result-background">
+        <div className="result-card">
+          <img
+            className="trophy"
+            src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
+            alt="trophy"
+          />
+          <p className="score-text">YOUR SCORE</p>
+          <p className="score">{score}</p>
+          <button
+            onClick={this.palyAgain}
+            className="restart-button"
+            type="button"
+          >
+            <img
+              className="restart-icon"
+              src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+              alt="reset"
+            />
+            PLAY AGAIN
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   renderViewPage = () => {
     const filteredThumbnailsList = this.getFilteredThumbnailsList()
@@ -70,7 +109,7 @@ class MatchGame extends Component {
     const randomImage = this.getRandomImageDetails()
     const {imageUrl} = randomImage
     return (
-      <div className="container">
+      <div>
         <img className="random-image" src={imageUrl} alt="randomImg" />
         {this.renderTabsList()}
 
@@ -90,17 +129,17 @@ class MatchGame extends Component {
   renderImages = () => {
     const {isTimeCompleted} = this.state
     return (
-      <div>
+      <div className="container">
         {isTimeCompleted ? this.renderViewPage() : this.renderResultPage()}
       </div>
     )
   }
 
   render() {
-    const {score} = this.state
+    const {score, timer} = this.state
     return (
       <div>
-        <NavBar score={score} />
+        <NavBar timer={timer} score={score} />
         {this.renderImages()}
       </div>
     )
