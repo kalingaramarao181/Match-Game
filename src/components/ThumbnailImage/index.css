@@ -1,0 +1,12 @@
+.thumbnail-img {
+  height: 70px;
+  margin: 5px;
+}
+.image-list-item {
+  list-style-type: none;
+}
+.tum-button {
+  border-width: 0px;
+  background-color: transparent;
+  cursor: pointer;
+}
